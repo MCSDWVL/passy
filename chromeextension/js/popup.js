@@ -23,7 +23,8 @@ function inputchanged(e)
 	var encoded = passy(document.getElementById('siteselect').value, document.getElementById('masterpass').value)[0]
 	document.getElementById('outputbox').value = encoded;
 	chrome.tabs.executeScript({
-		code: 'document.activeElement.value ="' + document.getElementById('outputbox').value + '";'
+		code: 'var ary = []; var inputs = document.getElementsByTagName("input"); for (var i=0; i<inputs.length; i++) { if (inputs[i].type.toLowerCase() === "password") { ary.push(inputs[i]); } }; for(var i = 0; i<ary.length; ++i) { ary[i].value = "'+ document.getElementById('outputbox').value +'"; }'
+		//code: 'document.activeElement.value ="' + document.getElementById('outputbox').value + '";'
 	});
 };
 
