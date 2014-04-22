@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<script type='text/javascript' src='js/passy.js'></script>
+		<script type='text/javascript'>
+
+			var password_timer=0;
+			function delayed_select(target)
+			{
+				// hack to wait for onmouseup event to pass
+				setTimeout(function(){target.select()},5); // 5ms
+			}
+			function clear_password()
+			{
+				// clear password field and set focus so we're ready to receive password again
+				document.getElementById('password').value = "";
+				document.getElementById('password').focus();
+
+				// force an update to clear the generated password (result) field as well
+				update_passy();
+			}
+			function update_passy()
+			{
+				// do password update
+				var site = document.getElementById('site').value;
+				var password = document.getElementById('password').value;
+				if ( site == "" || password == "" )
+				{
+					document.getElementById('result').value = "";
+					document.getElementById('result_old').value = "";
+				}
+				else
+				{
+					document.getElementById('result').value = passy(site,password)[0];
+					document.getElementById('result_old').value = passy(site,password)[1];
+				}
+
+				// set timer to clear password field after a minute
+				if ( password_timer != 0 )
+				{
+					clearTimeout(password_timer);
+				}
+				password_timer = setTimeout('clear_password()',60000);
+			}
+		</script>
+	</head>
+	<body>
+		<form>
+			Site Name:<br/>
+			<input type='text' id='site' onkeyup='update_passy()'><br/>
+			Secret Passphrase:<br/>
+			<input type='password' id='password' onkeyup='update_passy()'><br/>
+			<hr/>
+			Site Password:<br/>
+			<input type='text' size=40 id='result' readonly onfocus='delayed_select(this)'>
+			<br/>
+			Site Password (old version):<br/>
+			<input type='text' size=40 id='result_old' readonly onfocus='delayed_select(this)'>
+		</form>
+	</body>
+</html>

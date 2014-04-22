@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+
+  "name": "passy",
+  "description": "This extension automatically fills out passy-passwords",
+  "version": "0.1",
+   
+  //"background": {
+  //  "scripts":["test.js"]
+  //},
+
+  "permissions": [
+    "activeTab"
+  ],
+
+  "browser_action": {
+    "default_icon": "icon.png",
+	"default_popup": "popup.html"
+  }
+}

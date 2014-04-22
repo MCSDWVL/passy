@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Getting Started Extension's Popup</title>
+    <style>
+      body 
+      {
+        min-width: 357px;
+        overflow-x: hidden;
+        background-color: #33CCFF;
+      }
+      
+      .appname 
+      {
+      	font-family: fixedsys;
+      	color: White;
+      	font-size: 60px;
+      	width:100%;
+      	text-align:center;
+      }
+      
+      input
+      {
+        -moz-border-radius: 15px;
+        border-radius: 15px;
+        border:solid 1px #CCCCCC;
+        padding  :5px;
+        font-family:Fixedsys;
+      }
+      
+      .siteselect-holder
+      {
+      	text-align:center;
+      }
+      
+      .masterpass-holder
+      {
+      	text-align:center;
+      	color: White;
+      }
+      
+      .gobutton-holder
+      {
+      	text-align:center;
+      }
+      
+      .output-holder
+      {
+      	text-align:center;
+      }
+      
+      .gobutton
+      {
+      	font-family: fixedsys;
+      	color: White;
+      	font-size: 30px;
+      	text-align:center;
+      	-moz-border-radius: 100%;
+        border-radius: 100%;
+      }
+      
+    </style>
+
+    <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
+     -->
+	 <script src="js/passy.js"></script>
+    <script src="js/popup.js"></script>
+  </head>
+  <body>
+		<div class="appname">passy</div>
+		<div class="siteselect-holder"><input type=text name="siteselect" class="siteselect" id="siteselect"/></div>
+		<div class="masterpass-holder"><input type=password name="masterpass" class="masterpass" id="masterpass"/></div>
+		<div class="output-holder"><input type=text name="outputbox" class="outputbox" id="outputbox" /></div>
+		<div class="gobutton-holder"><input type=submit name="go" value="go" class="gobutton" id="click-me"/></div>
+  </body>
+</html>
+
