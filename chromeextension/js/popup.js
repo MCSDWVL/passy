@@ -2,7 +2,8 @@
 document.addEventListener('DOMContentLoaded', function ()
 {
 	// add the click event listener
-	document.getElementById('click-me').addEventListener('click', gobuttonpressed);
+	document.getElementById('first-button').addEventListener('click', firstbuttonpressed);
+	document.getElementById('all-button').addEventListener('click', allbuttonpressed);
 
 	// add the field change listeners
 	document.getElementById('siteselect').addEventListener('input', inputchanged, false);
@@ -22,15 +23,40 @@ function inputchanged(e)
 {
 	var encoded = passy(document.getElementById('siteselect').value, document.getElementById('masterpass').value)[0]
 	document.getElementById('outputbox').value = encoded;
+	fillActivePasswordField();
+};
+
+function fillActivePasswordField()
+{
 	chrome.tabs.executeScript({
-		code: 'var ary = []; var inputs = document.getElementsByTagName("input"); for (var i=0; i<inputs.length; i++) { if (inputs[i].type.toLowerCase() === "password") { ary.push(inputs[i]); } }; for(var i = 0; i<ary.length; ++i) { ary[i].value = "'+ document.getElementById('outputbox').value +'"; }'
+		code: 'if(document.activeElement && document.activeElement.type.toLowerCase() === "password") { document.activeElement.value = "' + document.getElementById('outputbox').value + '"; }'
 		//code: 'document.activeElement.value ="' + document.getElementById('outputbox').value + '";'
 	});
 };
 
-function gobuttonpressed(e)
+function fillFirstPasswordField()
 {
-	
+	chrome.tabs.executeScript({
+		code: 'var ary = []; var inputs = document.getElementsByTagName("input"); for (var i=0; i<inputs.length; i++) { if (inputs[i].type.toLowerCase() === "password") { ary.push(inputs[i]); } }; if(ary.length > 0) { ary[0].value = "' + document.getElementById('outputbox').value + '"; }'
+		//code: 'document.activeElement.value ="' + document.getElementById('outputbox').value + '";'
+	});
 };
 
+function fillAllPasswordFields()
+{
+	chrome.tabs.executeScript({
+		code: 'var ary = []; var inputs = document.getElementsByTagName("input"); for (var i=0; i<inputs.length; i++) { if (inputs[i].type.toLowerCase() === "password") { ary.push(inputs[i]); } }; for(var i = 0; i<ary.length; ++i) { ary[i].value = "' + document.getElementById('outputbox').value + '"; }'
+		//code: 'document.activeElement.value ="' + document.getElementById('outputbox').value + '";'
+	});
+};
+
+function firstbuttonpressed(e)
+{
+	fillFirstPasswordField();
+};
+
+function allbuttonpressed(e)
+{
+	fillAllPasswordFields();
+};
 
