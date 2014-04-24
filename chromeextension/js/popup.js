@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function ()
 	// add the click event listener
 	document.getElementById('first-button').addEventListener('click', firstbuttonpressed);
 	document.getElementById('all-button').addEventListener('click', allbuttonpressed);
-
 	document.getElementById('clip-button').addEventListener('click', copybuttonpressed);
 
 	// add the field change listeners
