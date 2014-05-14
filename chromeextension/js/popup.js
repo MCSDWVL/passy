@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function ()
 	// add the field change listeners
 	document.getElementById('siteselect').addEventListener('input', inputchanged, false);
 	document.getElementById('masterpass').addEventListener('input', inputchanged, false);
+	document.getElementById('allowsymbolsbox').addEventListener('click', inputchanged);
 
 	// auto fill the site select box to the current url
 	var siteSelectBox = document.querySelector(".siteselect");
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function ()
 
 function inputchanged(e)
 {
-	var encoded = passy(document.getElementById('siteselect').value, document.getElementById('masterpass').value)[0]
+	var encoded = passy(document.getElementById('siteselect').value, document.getElementById('masterpass').value, document.getElementById('allowsymbolsbox').checked)[0]
 	document.getElementById('outputbox').value = encoded;
 	fillActivePasswordField();
 };

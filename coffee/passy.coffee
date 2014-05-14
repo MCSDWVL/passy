@@ -28,7 +28,7 @@ SOFTWARE.
 
 ###
 
-passy = (text, secret) ->
+passy = (text, secret, allowSymbols) ->
 
 
   #
@@ -208,24 +208,24 @@ passy = (text, secret) ->
   #
 
   # returns true if string contains one of each [A-H], [a-h], [2-9], and [#$%*+=@?]
-  good_passy = (str) ->
+  good_passy = (str, allowSymbols) ->
     str.match(/[A-H]/) &&
     str.match(/[a-h]/) &&
     str.match(/[2-9]/) &&
-    str.match(/[#$%*+=@?]/)
+    (!allowSymbols || str.match(/[#$%*+=@?]/))
 
   # given a long string, find the minimum length "good" passy (i.e. has one of each
   # character type, and meets minimum length of 16 characters)
-  good_passy_length = (str) ->
+  good_passy_length = (str, allowSymbols) ->
     for i in [16..str.length]
-      return i if good_passy(str.substr(0,i))
+      return i if good_passy(str.substr(0,i), allowSymbols)
     return str.length # uh-oh, that's a long passy!
 
   # encode a hex string (typically a single octet) to a passy string
-  encode_passy = (secret, text) ->
+  encode_passy = (secret, text, allowSymbols) ->
 
     # our symbol table for passy
-    symtab = "ABCDEFGHabcdefgh23456789#$%*+=@?"
+    symtab = if allowSymbols then "ABCDEFGHabcdefgh23456789#$%*+=@?" else "ABCDEFGHabcdefgh23456789"
 
     # convert a hex string to a single passy character
     # * modulo and lookup in symtab string
@@ -246,7 +246,7 @@ passy = (text, secret) ->
     encoded = encode(double_hmac)
 
     # determine the length of the passy
-    len = good_passy_length(encoded)
+    len = good_passy_length(encoded, allowSymbols)
 
     # finally, return the passy string
     encoded.substr(0,len)
@@ -259,13 +259,13 @@ passy = (text, secret) ->
 
   # return an error if passy fails on this javascript
   return ["Error!","Error!"] unless  (
-    encode_passy(                "0123",                    "a") == "Gad6DdC2e3cD6dF937c82h5%" &&
-    encode_passy(    "ABab12!@CDcd34#$", "aB234SLKDJF(*#@jfsdk") == "d+B8#@hh5CB%=Fef" &&
-    encode_passy("11111111111111111111", "00000000000000000000") == "Fgh5bE?94A2chdhF"
+    encode_passy(                "0123",                    "a", true) == "Gad6DdC2e3cD6dF937c82h5%" &&
+    encode_passy(    "ABab12!@CDcd34#$", "aB234SLKDJF(*#@jfsdk", true) == "d+B8#@hh5CB%=Fef" &&
+    encode_passy("11111111111111111111", "00000000000000000000", true) == "Fgh5bE?94A2chdhF"
   )
 
   # return both new and old passy results (for now)
-  [encode_passy(secret,text),encode_passy_legacy(secret,text)]
+  [encode_passy(secret,text, allowSymbols),encode_passy_legacy(secret,text)]
 
 
 # add to the DOM (for Google closure compiler)
